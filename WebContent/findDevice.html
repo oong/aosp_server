@@ -1,0 +1,165 @@
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="icon" href="bootstrap-3.3.2/favicon.ico">
+    <title>OONG AOSP with Record/Playback</title>
+    <link href="bootstrap-3.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="bootstrap-3.3.2/dist/css/cover.css" rel="stylesheet">
+    <script src="bootstrap-3.3.2/assets/js/ie-emulation-modes-warning.js"></script>
+  </head>
+
+  <body>
+
+    <div class="site-wrapper">
+      <div class="site-wrapper-inner">
+        <div class="cover-container">
+          <div class="masthead clearfix">
+            <div class="inner">
+              <h3 class="masthead-brand">AOSP</h3>
+              <nav>
+                <ul class="nav masthead-nav">
+                  <li class="active"><a href="#">Home</a></li>
+                  <li><a href="#">Features</a></li>
+                  <li><a href="#">Contact</a></li>
+                </ul>
+              </nav>
+            </div>
+          </div>
+
+          <div class="inner cover">
+            <h1 class="cover-heading">Find your device</h1>
+            <p class="lead">input a device model name</p>
+					<form class="form-inline" action="/AOSP/hello">
+						<div class="form-group">
+							<label for="model_name">Model name : </label> 
+								<input type="text" class="form-control" id="model_name" placeholder="IM-A870K" name="model_name">
+						</div>
+						<button type="button" id="find_button" class="btn btn-default">Find</button>
+					</form>
+          </div>
+          <div class="mastfoot">
+            <div class="inner">
+              <p>Cover template for <a href="http://getbootstrap.com">Bootstrap</a>, by <a href="https://twitter.com/mdo">@mdo</a>.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+	<!-- Modal -->
+	<div class="modal fade" id="myModal" tabindex="-1" role="dialog"
+		aria-labelledby="myModalLabel" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+					<h4 class="modal-title" id="myModalLabel">Device Info</h4>
+				</div>
+				<div class="modal-body">
+					<table class="table table-condensed">
+  						<thead>
+  							<tr>
+  								<td>model name</td>
+  								<td>embedded H/W navi bar</td>
+  								<td>touch screen device name</td>
+  								<td>back button device name</td>
+  								<td>home button device name</td>
+  								<td>menu button device name</td>
+							</tr>
+  						</thead>
+					</table>		
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+					<button type="button" class="btn btn-primary">Save changes</button>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- /.modal -->
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+    <script src="bootstrap-3.3.2/dist/js/bootstrap.min.js"></script>
+    <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+    <script src="bootstrap-3.3.2/assets/js/ie10-viewport-bug-workaround.js"></script>
+    <script type="text/javascript">
+    $("#find_button").on("click", function() {
+		var modelName = $("#model_name").val();
+		if(modelName == null || modelName.trim() == "") {
+			alert("input a device model name!");
+			$("#model_name").focus();
+			return;
+		}
+		$.ajax({
+			url : "/AOSP/hello",
+			method : "GET",
+			data : { model_name : $("#model_name").val() },
+			dataType : "json"
+		}).done(function (result) {
+			console.log(result);
+			$('#myModal').modal("show");
+		}).fail(function (error) {
+			console.log(error);
+		});
+	});
+    
+    var exampleDataForEmulator = {
+    	modelName : "AOSP arm emulator",
+    	hasHWNaviBar : true,
+    	touchScreenDevice : {
+    		name : "qwerty2", 
+    		start : {type : "EV_KEY", code : "BTN_TOUCH", value : 1},
+    		end : {type : "EV_KEY", code : "BTN_TOUCH", value : 0},
+    		x : {type : "EV_ABS", code : "ABS_X", value : ""},
+    		y : {type : "EV_ABS", code : "ABS_Y", value : ""}
+   		},
+   		backButtonDevice : {
+   			name : "qwerty2",
+   			start : {type : "EV_KEY", code : "KEY_BACK", value : 1},
+   			end : {type : "EV_KEY", code : "KEY_BACK", value : 0}
+   		},
+   		homeButtonDevice : {
+   			name : "qwerty2",
+   			start : {type : "EV_KEY", code : "KEY_HOME", value : 1},
+   			end : {type : "EV_KEY", code : "KEY_HOME", value : 0}
+   		},
+   		menuButtonDevice : {
+   			name : "qwerty2",
+   			start : {type : "EV_KEY", code : "KEY_KBDILLUMDOWN", value : 1},
+   			end : {type : "EV_KEY", code : "KEY_KBDILLUMDOWN", value : 0}
+   		}
+    };
+    
+    var exampleDataForIMA870K = {
+    		modelName : "IM-A870K",
+        	hasHWNaviBar : false,
+        	touchScreenDevice : {
+        		name : "sensor00fn11", 
+        		start : {type : "EV_ABS", code : "ABS_MT_TRACKING_ID", value : ""},
+        		end : {type : "EV_ABS", code : "ABS_MT_TRACKING_ID", value : -1},
+        		x : {type : "EV_ABS", code : "ABS_MT_POSITION_X", value : ""},
+        		y : {type : "EV_ABS", code : "ABS_MT_POSITION_Y", value : ""}
+       		},
+      		backButtonDevice : null,
+      		homeButtonDevice : null,
+      		menuButtonDevice : null
+    };
+    
+    $(function() {
+    	console.log(exampleDataForEmulator);
+    	console.log(exampleDataForIMA870K);
+    })
+
+    	
+    </script>
+  </body>
+  
+</html>
