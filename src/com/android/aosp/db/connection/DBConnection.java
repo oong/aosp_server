@@ -19,7 +19,6 @@ public class DBConnection {
 		if(DB_CONNECTION == null) 
 			DB_CONNECTION = new DBConnection();
 		
-		System.out.println(DB_CONNECTION.toString());
 		return DB_CONNECTION;
 	}
 	

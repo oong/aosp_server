@@ -10,7 +10,6 @@ public abstract class BaseDAO {
 		connection = DBConnection.getInstance().getConnection();
 	}
 	Connection getConnection() {
-		System.out.println(connection.toString());
 		return connection;
 	}
 	

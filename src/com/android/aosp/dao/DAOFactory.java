@@ -2,8 +2,8 @@ package com.android.aosp.dao;
 
 public class DAOFactory implements Factory{
 
-	public static final String NAME_DEVICE_INFO_DAO = "DeviceInfoDAO"; 
-	
+	public static final String NAME_EQDEVICE_INFO_DAO = "EquivalentDeviceInfoDAO"; 
+	public static final String NAME_AVAILABLE_ACION_DAO = "AvailableActionDAO";
 	private static DAOFactory DAO_FACTORY;
 	
 	public static synchronized Factory getInstance() {
@@ -17,15 +17,19 @@ public class DAOFactory implements Factory{
 	public Object getObject(String daoName) {
 		// TODO Auto-generated method stub
 		switch(daoName) {
-		case NAME_DEVICE_INFO_DAO : 
-			return createDeviceInfoDAO();
+		case NAME_EQDEVICE_INFO_DAO : 
+			return createEQDeviceInfoDAO();
+		case NAME_AVAILABLE_ACION_DAO : 
+			return createAvailableActionDAO();
 		default : 
 			return null;
 		}
 	}
-	
-	private DeviceInfoDAO createDeviceInfoDAO() {
-		return new DeviceInfoDAOImpl();
+	private AvailableActionDAO createAvailableActionDAO() {
+		return new AvailableActionDAOImpl();
+	}
+	private EquivalentDeviceInfoDAO createEQDeviceInfoDAO() {
+		return new EquivalentDeviceInfoDAOImpl();
 	}
 	
 

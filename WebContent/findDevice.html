@@ -38,6 +38,8 @@
             <p class="lead">input a device model name</p>
 					<form class="form-inline" action="/AOSP/hello">
 						<div class="form-group">
+							<label for="manufacturer_name">Manufacturer name : </label> 
+								<input type="text" class="form-control" id="manufacturer_name" placeholder="samsung" name="manufacturer_name">
 							<label for="model_name">Model name : </label> 
 								<input type="text" class="form-control" id="model_name" placeholder="IM-A870K" name="model_name">
 						</div>
@@ -101,7 +103,7 @@
 		$.ajax({
 			url : "/AOSP/hello",
 			method : "GET",
-			data : { model_name : $("#model_name").val() },
+			data : { model_name : $("#model_name").val(), manufacturer_name : $("#manufacturer_name").val()},
 			dataType : "json"
 		}).done(function (result) {
 			console.log(result);
